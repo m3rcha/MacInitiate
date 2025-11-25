@@ -227,3 +227,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **No compromises**: Free, no account required, works offline
 
 **Join the macOS development revolution—make setup simple again!** 🎉
+
+---
+
+*This README was created with assistance from AI and human collaboration.* 🤖👥

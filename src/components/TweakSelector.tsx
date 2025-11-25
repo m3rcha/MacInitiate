@@ -1,5 +1,12 @@
 'use client'
 
+// =================
+// AI-GENERATED CODE
+// =================
+// This component was created with assistance from AI and human collaboration.
+// AI contributed to: Complex filtering logic, pagination, Turkish localization, selection management.
+// Human collaboration: UI design, user experience improvements, bug fixes and refinements.
+
 import { useState, useMemo } from 'react'
 import { Search, Settings, ExternalLink, AlertTriangle, Check, X, ChevronDown, ChevronRight, Info, Shield, Zap, Filter, Grid, List, Clock, TrendingUp, Package } from 'lucide-react'
 import type { SystemTweak, TweakFilters, TweakCategoryId, TweakCategory } from '@/types/tweaks'

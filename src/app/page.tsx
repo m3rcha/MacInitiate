@@ -464,6 +464,13 @@ export default function Home() {
   )
 }
 
+// =================
+// AI-GENERATED CODE
+// =================
+// This component was created with assistance from AI and human collaboration.
+// AI contributed to: UI/UX design, functionality implementation, and code optimization.
+// Human collaboration: Feature planning, testing, and final refinements.
+
 // Counter component for animated numbers
 function Counter({ end, duration = 2000 }: { end: number; duration?: number }) {
   const [count, setCount] = useState(0)

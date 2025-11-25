@@ -1,5 +1,12 @@
 'use client'
 
+// =================
+// AI-GENERATED CODE
+// =================
+// This component was created with assistance from AI and human collaboration.
+// AI contributed to: State management architecture, action types, complex toggling logic.
+// Human collaboration: Bug fixing for selection states, integration with UI components.
+
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react'
 import type { App, Tweak, SetupState, SetupAction } from '@/types/common'
 import { ScriptGenerator, GenerationResult, ScriptGenerationOptions } from '@/lib/script-generator'

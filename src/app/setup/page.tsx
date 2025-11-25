@@ -1,5 +1,12 @@
 'use client'
 
+// =================
+// AI-GENERATED CODE
+// =================
+// This component was created with assistance from AI and human collaboration.
+// AI contributed to: Multi-step wizard logic, Turkish translations, state management.
+// Human collaboration: UI design, user experience flow, beta safety features.
+
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Terminal, Package, Settings, Code, Keyboard, Sparkles, Zap, Shield } from 'lucide-react'

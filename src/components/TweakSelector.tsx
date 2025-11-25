@@ -151,19 +151,12 @@ export function TweakSelector({ selectedTweaks, onTweakToggle, className }: Twea
     }
 
     const handleTweakToggle = (tweak: SystemTweak) => {
-        if (tweak.valueType === 'boolean') {
-            const currentValue = getTweakValue(tweak.id) ?? tweak.defaultValue
-            const newValue = currentValue === true ? false : true
-            onTweakToggle(tweak.id, newValue)
-        } else if (tweak.valueType === 'integer') {
-            const currentValue = getTweakValue(tweak.id) ?? tweak.defaultValue
-            const newValue = currentValue === 64 ? 48 : 64 // Toggle between default and increased
-            onTweakToggle(tweak.id, newValue)
-        } else if (tweak.valueType === 'string') {
-            // For string values, toggle between default and a specific value
-            const currentValue = getTweakValue(tweak.id) ?? tweak.defaultValue
-            const newValue = currentValue === tweak.defaultValue ? '/bin/zsh' : tweak.defaultValue
-            onTweakToggle(tweak.id, newValue)
+        if (isTweakSelected(tweak.id)) {
+            // If selected, remove it completely
+            onTweakToggle(tweak.id, null)
+        } else {
+            // If not selected, add it with default value
+            onTweakToggle(tweak.id, tweak.defaultValue)
         }
     }
 
@@ -432,7 +425,7 @@ export function TweakSelector({ selectedTweaks, onTweakToggle, className }: Twea
 
                                             {/* Tweak Header */}
                                             <div className={cn(
-                                                'flex items-start justify-between mb-3',
+                                                'flex items-start justify-between',
                                                 viewMode === 'list' && 'mb-0 flex-1'
                                             )}>
                                                 <div className="flex items-start space-x-3 flex-1">
@@ -459,79 +452,6 @@ export function TweakSelector({ selectedTweaks, onTweakToggle, className }: Twea
                                                             {tweak.description}
                                                         </p>
                                                     </div>
-                                                </div>
-
-                                                {/* Toggle Control */}
-                                                <div className="flex items-center space-x-2">
-                                                    {tweak.valueType === 'boolean' && (
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                handleTweakToggle(tweak)
-                                                            }}
-                                                            className={cn(
-                                                                'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
-                                                                getTweakValue(tweak.id) === true
-                                                                    ? 'bg-primary'
-                                                                    : 'bg-muted'
-                                                            )}
-                                                        >
-                                                            <span
-                                                                className={cn(
-                                                                    'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
-                                                                    getTweakValue(tweak.id) === true
-                                                                        ? 'translate-x-6'
-                                                                        : 'translate-x-1'
-                                                                )}
-                                                            />
-                                                        </button>
-                                                    )}
-                                                    {tweak.valueType === 'integer' && (
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                handleTweakToggle(tweak)
-                                                            }}
-                                                            className={cn(
-                                                                'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
-                                                                getTweakValue(tweak.id) === 64
-                                                                    ? 'bg-primary'
-                                                                    : 'bg-muted'
-                                                            )}
-                                                        >
-                                                            <span
-                                                                className={cn(
-                                                                    'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
-                                                                    getTweakValue(tweak.id) === 64
-                                                                        ? 'translate-x-6'
-                                                                        : 'translate-x-1'
-                                                                )}
-                                                            />
-                                                        </button>
-                                                    )}
-                                                    {tweak.valueType === 'string' && (
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                handleTweakToggle(tweak)
-                                                            }}
-                                                            className={cn(
-                                                                'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
-                                                                getTweakValue(tweak.id) === '/bin/zsh'
-                                                                    ? 'bg-primary'
-                                                                    : 'bg-muted'
-                                                            )}
-                                                        >
-                                                            <span
-                                                                className={cn(
-                                                                    'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
-                                                                    getTweakValue(tweak.id) === '/bin/zsh'
-                                                                        ? 'translate-x-6'
-                                                                        : 'translate-x-1'
-                                                                )}
-                                                            />
-                                                        </button>
-                                                    )}
                                                 </div>
                                             </div>
 

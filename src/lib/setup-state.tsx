@@ -50,6 +50,16 @@ function setupReducer(state: SetupState, action: SetupAction): SetupState {
             } else if (action.value !== undefined) {
                 // If a specific value is provided, use it
                 newTweakValue = action.value
+
+                // If the value is null, remove the tweak entirely (deselection)
+                if (action.value === null) {
+                    const newSelectedTweaks = { ...state.selectedTweaks }
+                    delete newSelectedTweaks[action.tweakId]
+                    return {
+                        ...state,
+                        selectedTweaks: newSelectedTweaks,
+                    }
+                }
             } else if (typeof currentTweakValue === 'boolean') {
                 // For boolean values, toggle true/false
                 newTweakValue = !currentTweakValue

@@ -135,10 +135,13 @@ function SetupContent() {
                   </div>
                   <div className="space-y-4">
                     <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
-                      Setup your Mac
+                      {language === 'tr' ? 'Mac\'ınızı Kurun' : 'Setup your Mac'}
                     </h1>
                     <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-                      Choose your apps and system preferences. We'll generate a single command to set up everything.
+                      {language === 'tr'
+                        ? 'Uygulamalarınızı ve sistem tercihlerinizi seçin. Her şeyi kurmak için tek bir komut oluşturacağız.'
+                        : 'Choose your apps and system preferences. We\'ll generate a single command to set up everything.'
+                      }
                     </p>
                   </div>
                 </div>
@@ -149,27 +152,42 @@ function SetupContent() {
                       <div className="h-12 w-12 mx-auto bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-4">
                         <Package className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Essential Apps</h3>
+                      <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
+                        {language === 'tr' ? 'Temel Uygulamalar' : 'Essential Apps'}
+                      </h3>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
-                        250+ curated applications for development and productivity
+                        {language === 'tr'
+                          ? 'Geliştirme ve üretkenlik için 250+ özenle seçilmiş uygulama'
+                          : '250+ curated applications for development and productivity'
+                        }
                       </p>
                     </div>
                     <div className="text-center">
                       <div className="h-12 w-12 mx-auto bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center mb-4">
                         <Settings className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                       </div>
-                      <h3 className="font-semibold text-slate-900 dark:text-white mb-2">System Preferences</h3>
+                      <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
+                        {language === 'tr' ? 'Sistem Tercihleri' : 'System Preferences'}
+                      </h3>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
-                        86+ tweaks to optimize your macOS experience
+                        {language === 'tr'
+                          ? 'macOS deneyimini optimize etmek için 86+ ayar'
+                          : '86+ tweaks to optimize your macOS experience'
+                        }
                       </p>
                     </div>
                     <div className="text-center">
                       <div className="h-12 w-12 mx-auto bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mb-4">
                         <Terminal className="h-6 w-6 text-green-600 dark:text-green-400" />
                       </div>
-                      <h3 className="font-semibold text-slate-900 dark:text-white mb-2">One Command</h3>
+                      <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
+                        {language === 'tr' ? 'Tek Komut' : 'One Command'}
+                      </h3>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
-                        Single terminal script to install and configure everything
+                        {language === 'tr'
+                          ? 'Her şeyi kurmak ve yapılandırmak için tek terminal scripti'
+                          : 'Single terminal script to install and configure everything'
+                        }
                       </p>
                     </div>
                   </div>
@@ -180,7 +198,7 @@ function SetupContent() {
                     onClick={nextStep}
                     className="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
                   >
-                    Get Started
+                    {language === 'tr' ? 'Başla' : 'Get Started'}
                     <ArrowLeft className="ml-2 h-5 w-5 rotate-180" />
                   </button>
                 </div>
@@ -197,10 +215,13 @@ function SetupContent() {
                   </div>
                   <div className="space-y-4">
                     <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
-                      Choose Apps
+                      {language === 'tr' ? 'Uygulamaları Seçin' : 'Choose Apps'}
                     </h1>
                     <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-                      Select from 250+ curated applications for development and productivity.
+                      {language === 'tr'
+                        ? 'Geliştirme ve üretkenlik için 250+ özenle seçilmiş uygulamadan seçim yapın.'
+                        : 'Select from 250+ curated applications for development and productivity.'
+                      }
                     </p>
                   </div>
                 </div>
@@ -218,13 +239,13 @@ function SetupContent() {
                     className="inline-flex items-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
                   >
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back
+                    {language === 'tr' ? 'Geri' : 'Back'}
                   </button>
                   <button
                     onClick={nextStep}
                     className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
                   >
-                    Continue
+                    {language === 'tr' ? 'Devam Et' : 'Continue'}
                     <ArrowLeft className="ml-2 h-4 w-4 rotate-180" />
                   </button>
                 </div>
@@ -241,10 +262,13 @@ function SetupContent() {
                   </div>
                   <div className="space-y-4">
                     <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
-                      Configure macOS
+                      {language === 'tr' ? 'macOS\'u Yapılandırın' : 'Configure macOS'}
                     </h1>
                     <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-                      Choose system preferences and optimizations for your macOS experience.
+                      {language === 'tr'
+                        ? 'macOS deneyimlerinizi optimize etmek için sistem tercihleri ve ayarları seçin.'
+                        : 'Choose system preferences and optimizations for your macOS experience.'
+                      }
                     </p>
                   </div>
                 </div>
@@ -262,13 +286,13 @@ function SetupContent() {
                     className="inline-flex items-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
                   >
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back
+                    {language === 'tr' ? 'Geri' : 'Back'}
                   </button>
                   <button
                     onClick={nextStep}
                     className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
                   >
-                    Continue
+                    {language === 'tr' ? 'Devam Et' : 'Continue'}
                     <ArrowLeft className="ml-2 h-4 w-4 rotate-180" />
                   </button>
                 </div>
@@ -310,7 +334,7 @@ function SetupContent() {
                       className="inline-flex items-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
                     >
                       <ArrowLeft className="mr-2 h-4 w-4" />
-                      Back
+                      {language === 'tr' ? 'Geri' : 'Back'}
                     </button>
                   </div>
                 </AnimatedContainer >
@@ -355,7 +379,7 @@ function SetupContent() {
                       className="inline-flex items-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
                     >
                       <ArrowLeft className="mr-2 h-4 w-4" />
-                      Back
+                      {language === 'tr' ? 'Geri' : 'Back'}
                     </button>
                   </div>
                 </AnimatedContainer>

@@ -1,9 +1,12 @@
 'use client'
 
-import { createContext, useContext, useReducer, ReactNode } from 'react'
-import type { SetupState, SetupAction } from '@/types/common'
-import { ScriptGenerator } from './script-generator'
-import type { GenerationResult, ScriptGenerationOptions } from './script-generator'
+import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react'
+import type { App, Tweak, SetupState, SetupAction } from '@/types/common'
+import { ScriptGenerator, GenerationResult, ScriptGenerationOptions } from '@/lib/script-generator'
+import { ConfigSharing, SetupConfiguration } from '@/lib/config-sharing'
+import { APPS } from '@/data/apps'
+import { SYSTEM_TWEAKS } from '@/data/tweaks'
+import type { App as AppType, Tweak as TweakType } from '@/types/common'
 
 const initialState: SetupState = {
     selectedApps: [],
@@ -97,6 +100,28 @@ function setupReducer(state: SetupState, action: SetupAction): SetupState {
         case 'RESET_SETUP':
             return {
                 ...initialState,
+            }
+
+        case 'IMPORT_CONFIG':
+            return {
+                ...state,
+                selectedApps: action.config.apps,
+                selectedTweaks: action.config.tweaks,
+                generationResult: null,
+                generatedScript: '',
+                currentStep: 'generate',
+                progress: 80,
+            }
+
+        case 'RESET_CONFIG':
+            return {
+                ...state,
+                selectedApps: [],
+                selectedTweaks: {},
+                generationResult: null,
+                generatedScript: '',
+                currentStep: 'welcome',
+                progress: 0,
             }
 
         default:
@@ -205,11 +230,15 @@ export function useScriptGeneration() {
         dispatch({ type: 'START_GENERATION' })
 
         // Simulate async generation
-        setTimeout(() => {
-            const generator = new ScriptGenerator(state.scriptOptions)
-            const result = generator.generateScript(state.selectedApps, state.selectedTweaks)
-            dispatch({ type: 'GENERATION_COMPLETE', result })
-        }, 1000)
+        await new Promise(resolve => setTimeout(resolve, 1500))
+
+        const generator = new ScriptGenerator()
+        const result = generator.generateScript(
+            state.selectedApps,
+            state.selectedTweaks
+        )
+
+        dispatch({ type: 'GENERATION_COMPLETE', result })
     }
 
     const updateOptions = (options: ScriptGenerationOptions) => {
@@ -221,7 +250,38 @@ export function useScriptGeneration() {
         updateOptions,
         result: state.generationResult,
         isGenerating: state.isGenerating,
-        options: state.scriptOptions,
+        options: state.scriptOptions
+    }
+}
+
+export function useConfigurationSharing() {
+    const { state, dispatch } = useSetup()
+
+    const importConfiguration = (config: SetupConfiguration) => {
+        dispatch({ type: 'IMPORT_CONFIG', config })
+    }
+
+    const resetConfiguration = () => {
+        dispatch({ type: 'RESET_CONFIG' })
+    }
+
+    // Auto-import from URL on mount
+    React.useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const config = ConfigSharing.extractConfigFromUrl()
+            if (config) {
+                importConfiguration(config)
+            }
+        }
+    }, [])
+
+    return {
+        importConfiguration,
+        resetConfiguration,
+        currentConfig: ConfigSharing.createFromState(
+            state.selectedApps,
+            state.selectedTweaks
+        )
     }
 }
 

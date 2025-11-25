@@ -1,3 +1,30 @@
+export interface App {
+  id: string
+  name: string
+  description: string
+  category: string
+  size: string
+  homepage?: string
+  tap?: string
+  dependencies?: string[]
+  conflicts?: string[]
+}
+
+export interface Tweak {
+  id: string
+  name: string
+  description: string
+  category: string
+  domain: string
+  key: string
+  type: 'boolean' | 'string' | 'number' | 'null'
+  defaultValue: boolean | string | number | null
+  requiresRestart?: boolean
+  requiresSudo?: boolean
+  safe: boolean
+  command: string
+}
+
 export interface SetupState {
   selectedApps: string[]
   selectedTweaks: Record<string, boolean | string | number | null>
@@ -22,6 +49,8 @@ export type SetupAction =
   | { type: 'START_GENERATION' }
   | { type: 'GENERATION_COMPLETE'; result: import('../lib/script-generator').GenerationResult }
   | { type: 'SET_SCRIPT_OPTIONS'; options: import('../lib/script-generator').ScriptGenerationOptions }
+  | { type: 'IMPORT_CONFIG'; config: import('../lib/config-sharing').SetupConfiguration }
+  | { type: 'RESET_CONFIG' }
 
 export interface ScriptGenerationOptions {
   includeComments: boolean

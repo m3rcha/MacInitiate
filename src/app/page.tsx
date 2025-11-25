@@ -1,131 +1,315 @@
 'use client'
 
 import Link from 'next/link'
-import { Terminal, Zap, Shield, Cpu } from 'lucide-react'
+import { Terminal, Zap, Shield, Cpu, ArrowRight, CheckCircle, Package, Settings, Code } from 'lucide-react'
+import {
+  AnimatedContainer,
+  AnimatedButton,
+  AnimatedCard,
+  StaggerContainer,
+  StaggerItem,
+  transitions
+} from '@/components/ui/motion'
+import { LanguageThemeSelector } from '@/components/LanguageThemeSelector'
+import { useLanguage } from '@/contexts/language-context'
+import { useTranslation } from '@/lib/i18n'
 
 export default function Home() {
+  const { language } = useLanguage()
+  const { t } = useTranslation(language)
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
-      <nav className="border-b border-border bg-card">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Terminal className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold">MacInitiate</span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/setup"
-                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-              >
-                Get Started
-              </Link>
+      <AnimatedContainer variant="slideDown">
+        <nav className="border-b border-border bg-card">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Terminal className="h-6 w-6 text-primary" />
+                <span className="text-xl font-bold">MacInitiate</span>
+              </div>
+              <div className="flex items-center space-x-6">
+                <LanguageThemeSelector />
+                <AnimatedButton>
+                  <Link
+                    href="/setup"
+                    className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                  >
+                    {t.landing.hero.getStarted}
+                  </Link>
+                </AnimatedButton>
+              </div>
             </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </AnimatedContainer>
 
       {/* Hero Section */}
-      <main className="container mx-auto px-4 py-16">
-        <div className="mx-auto max-w-4xl text-center">
-          <div className="mx-auto mb-8 flex max-w-fit items-center justify-center rounded-full bg-muted px-4 py-2 text-sm text-muted-foreground">
-            <Zap className="mr-2 h-4 w-4" />
-            Zero-config macOS setup in minutes, not hours
-          </div>
+      <main className="container mx-auto px-6 py-16">
+        <div className="mx-auto max-w-5xl text-center space-y-8">
+          <AnimatedContainer variant="fadeIn" delay={0.1}>
+            <div className="mx-auto flex max-w-fit items-center justify-center rounded-full bg-primary/10 border border-primary/20 px-6 py-3 text-sm text-primary font-medium">
+              <Zap className="mr-2 h-4 w-4" />
+              {t.landing.hero.subtitle}
+            </div>
+          </AnimatedContainer>
 
-          <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl">
-            The Ultimate{' '}
-            <span className="text-primary">&ldquo;Day 1&rdquo; macOS</span> Setup Tool
-          </h1>
+          <AnimatedContainer variant="slideUp" delay={0.2}>
+            <h1 className="mb-6 text-5xl font-bold tracking-tight sm:text-7xl">
+              {t.landing.hero.title}
+            </h1>
+            <p className="mb-8 text-xl text-muted-foreground sm:text-2xl max-w-3xl mx-auto leading-relaxed">
+              {t.landing.hero.description}
+            </p>
+          </AnimatedContainer>
 
-          <p className="mb-8 text-lg text-muted-foreground sm:text-xl">
-            Transform hours of manual configuration into a single command. 
-            Select your apps, customize system preferences, and generate the 
-            perfect setup script for your Mac.
-          </p>
-
-          <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <Link
-              href="/setup"
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-lg transition-colors hover:bg-primary/90"
-            >
-              <Terminal className="mr-2 h-4 w-4" />
-              Start Setup
-            </Link>
-            <Link
-              href="#features"
-              className="inline-flex items-center justify-center rounded-lg border border-border bg-card px-6 py-3 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
-            >
-              Learn More
-            </Link>
-          </div>
+          <AnimatedContainer variant="slideUp" delay={0.3}>
+            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+              <AnimatedButton>
+                <Link
+                  href="/setup"
+                  className="inline-flex items-center justify-center rounded-xl bg-primary px-8 py-4 text-base font-medium text-primary-foreground shadow-lg transition-all duration-200 hover:bg-primary/90 hover:shadow-xl hover:scale-105"
+                >
+                  <Terminal className="mr-2 h-5 w-5" />
+                  {t.landing.hero.getStarted}
+                </Link>
+              </AnimatedButton>
+              <AnimatedButton>
+                <Link
+                  href="#features"
+                  className="inline-flex items-center justify-center rounded-xl border border-border bg-card px-8 py-4 text-base font-medium shadow-md transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:shadow-lg"
+                >
+                  {t.landing.hero.viewDemo}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </AnimatedButton>
+            </div>
+          </AnimatedContainer>
         </div>
 
-        {/* Features Grid */}
-        <div id="features" className="mt-24 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-lg border border-border bg-card p-6">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-              <Cpu className="h-6 w-6 text-primary" />
+        {/* Stats Section */}
+        <AnimatedContainer variant="fadeIn" delay={0.5}>
+          <div className="mx-auto mt-20 max-w-4xl">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary mb-2">{t.landing.stats.apps}</div>
+                <div className="text-sm text-muted-foreground">{t.landing.stats.labels.applications}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary mb-2">{t.landing.stats.tweaks}</div>
+                <div className="text-sm text-muted-foreground">{t.landing.stats.labels.systemTweaks}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary mb-2">{t.landing.stats.timeSaved}</div>
+                <div className="text-sm text-muted-foreground">{t.landing.stats.labels.setupTime}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary mb-2">{t.landing.stats.success}</div>
+                <div className="text-sm text-muted-foreground">{t.landing.stats.labels.successRate}</div>
+              </div>
             </div>
-            <h3 className="mb-2 text-lg font-semibold">Development Templates</h3>
-            <p className="text-sm text-muted-foreground">
-              Pre-configured stacks for React Native, Python ML, DevOps, and more. 
-              Includes language runtimes, tools, and project-specific settings.
-            </p>
           </div>
+        </AnimatedContainer>
 
-          <div className="rounded-lg border border-border bg-card p-6">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-              <Shield className="h-6 w-6 text-primary" />
+        {/* Features Section */}
+        <section id="features" className="mt-24">
+          <AnimatedContainer variant="fadeIn" delay={0.6}>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+                {t.landing.features.sectionTitle}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {t.landing.features.sectionDescription}
+              </p>
             </div>
-            <h3 className="mb-2 text-lg font-semibold">Smart Resolution</h3>
-            <p className="text-sm text-muted-foreground">
-              Intelligent dependency management, conflict detection, and optimal 
-              installation ordering for maximum success rate.
-            </p>
-          </div>
+          </AnimatedContainer>
 
-          <div className="rounded-lg border border-border bg-card p-6">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-              <Zap className="h-6 w-6 text-primary" />
+          <StaggerContainer className="grid md:grid-cols-3 gap-8">
+            <StaggerItem>
+              <AnimatedCard className="rounded-2xl border border-border bg-card p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+                  <Package className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4">{t.landing.features.apps.title}</h3>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  {t.landing.features.apps.description}
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    {t.landing.features.apps.items.devTools}
+                  </div>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    {t.landing.features.apps.items.productivity}
+                  </div>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    {t.landing.features.apps.items.security}
+                  </div>
+                </div>
+              </AnimatedCard>
+            </StaggerItem>
+
+            <StaggerItem>
+              <AnimatedCard className="rounded-2xl border border-border bg-card p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+                  <Settings className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4">{t.landing.features.tweaks.title}</h3>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  {t.landing.features.tweaks.description}
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    {t.landing.features.tweaks.items.dock}
+                  </div>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    {t.landing.features.tweaks.items.finder}
+                  </div>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    {t.landing.features.tweaks.items.security}
+                  </div>
+                </div>
+              </AnimatedCard>
+            </StaggerItem>
+
+            <StaggerItem>
+              <AnimatedCard className="rounded-2xl border border-border bg-card p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+                  <Code className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4">{t.landing.features.generator.title}</h3>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  {t.landing.features.generator.description}
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    {t.landing.features.generator.items.singleCommand}
+                  </div>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    {t.landing.features.generator.items.customizable}
+                  </div>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    {t.landing.features.generator.items.errorHandling}
+                  </div>
+                </div>
+              </AnimatedCard>
+            </StaggerItem>
+          </StaggerContainer>
+        </section>
+
+        {/* How It Works Section */}
+        <section className="mt-24">
+          <AnimatedContainer variant="fadeIn" delay={1.0}>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+                {t.landing.howItWorks.title}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {t.landing.howItWorks.description}
+              </p>
             </div>
-            <h3 className="mb-2 text-lg font-semibold">Configuration Sync</h3>
-            <p className="text-sm text-muted-foreground">
-              Cloud-based configuration management with version history, 
-              team sharing, and cross-machine synchronization.
-            </p>
+          </AnimatedContainer>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            <AnimatedContainer variant="slideUp" delay={1.1}>
+              <div className="text-center">
+                <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                  <Package className="h-8 w-8 text-primary" />
+                </div>
+                <div className="text-lg font-semibold mb-3">1. {t.landing.howItWorks.steps.select}</div>
+                <p className="text-muted-foreground text-sm">
+                  {t.landing.howItWorks.steps.descriptions.select}
+                </p>
+              </div>
+            </AnimatedContainer>
+
+            <AnimatedContainer variant="slideUp" delay={1.2}>
+              <div className="text-center">
+                <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                  <Settings className="h-8 w-8 text-primary" />
+                </div>
+                <div className="text-lg font-semibold mb-3">2. {t.landing.howItWorks.steps.customize}</div>
+                <p className="text-muted-foreground text-sm">
+                  {t.landing.howItWorks.steps.descriptions.customize}
+                </p>
+              </div>
+            </AnimatedContainer>
+
+            <AnimatedContainer variant="slideUp" delay={1.3}>
+              <div className="text-center">
+                <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                  <Code className="h-8 w-8 text-primary" />
+                </div>
+                <div className="text-lg font-semibold mb-3">3. {t.landing.howItWorks.steps.generate}</div>
+                <p className="text-muted-foreground text-sm">
+                  {t.landing.howItWorks.steps.descriptions.generate}
+                </p>
+              </div>
+            </AnimatedContainer>
+
+            <AnimatedContainer variant="slideUp" delay={1.4}>
+              <div className="text-center">
+                <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                  <Terminal className="h-8 w-8 text-primary" />
+                </div>
+                <div className="text-lg font-semibold mb-3">4. {t.landing.howItWorks.steps.deploy}</div>
+                <p className="text-muted-foreground text-sm">
+                  {t.landing.howItWorks.steps.descriptions.deploy}
+                </p>
+              </div>
+            </AnimatedContainer>
           </div>
-        </div>
+        </section>
 
         {/* CTA Section */}
-        <div className="mt-24 rounded-lg bg-muted p-8 text-center">
-          <h2 className="mb-4 text-2xl font-bold">
-            Ready to transform your Mac setup experience?
-          </h2>
-          <p className="mb-6 text-muted-foreground">
-            Join thousands of developers who&apos;ve reclaimed hours of their time.
-          </p>
-          <Link
-            href="/setup"
-            className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3 text-sm font-medium text-primary-foreground shadow-lg transition-colors hover:bg-primary/90"
-          >
-            Start Your Setup - It&apos;s Free
-          </Link>
-        </div>
+        <section className="mt-24">
+          <AnimatedContainer variant="fadeIn" delay={1.5}>
+            <AnimatedCard className="rounded-3xl border border-border bg-gradient-to-r from-primary/5 to-primary/10 p-12 text-center shadow-xl">
+              <div className="max-w-2xl mx-auto space-y-6">
+                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                  {t.landing.cta.title}
+                </h2>
+                <p className="text-lg text-muted-foreground">
+                  {t.landing.cta.description}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                  <AnimatedButton>
+                    <Link
+                      href="/setup"
+                      className="inline-flex items-center justify-center rounded-xl bg-primary px-8 py-4 text-base font-medium text-primary-foreground shadow-lg transition-all duration-200 hover:bg-primary/90 hover:shadow-xl hover:scale-105"
+                    >
+                      <Terminal className="mr-2 h-5 w-5" />
+                      {t.landing.hero.getStarted}
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </AnimatedButton>
+                </div>
+              </div>
+            </AnimatedCard>
+          </AnimatedContainer>
+        </section>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <div className="flex items-center space-x-2">
-              <Terminal className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium">MacInitiate</span>
+      <footer className="border-t border-border bg-muted/50 mt-24">
+        <div className="container mx-auto px-6 py-12">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center space-x-3 mb-4 md:mb-0">
+              <Terminal className="h-6 w-6 text-primary" />
+              <span className="text-lg font-semibold">MacInitiate</span>
             </div>
-            <p className="text-sm text-muted-foreground">
-              2025 MacInitiate. Built for developers, by developers.
-            </p>
+            <div className="text-sm text-muted-foreground">
+              © 2025 MacInitiate. Built with ❤️ for macOS developers.
+            </div>
           </div>
         </div>
       </footer>

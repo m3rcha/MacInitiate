@@ -141,4 +141,51 @@ export class ConfigSharing {
             return false
         }
     }
+
+    // Generate social sharing text
+    static generateShareText(config: SetupConfiguration): string {
+        const appCount = config.apps.length
+        const tweakCount = Object.keys(config.tweaks).length
+
+        return `Just set up my Mac with ${appCount} apps and ${tweakCount} system tweaks using MacInitiate! 🚀`
+    }
+
+    // Generate Twitter sharing URL
+    static generateTwitterUrl(config: SetupConfiguration, setupUrl: string): string {
+        const text = this.generateShareText(config)
+        const encodedText = encodeURIComponent(text)
+        const encodedUrl = encodeURIComponent(setupUrl)
+
+        return `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`
+    }
+
+    // Generate LinkedIn sharing URL
+    static generateLinkedInUrl(config: SetupConfiguration, setupUrl: string): string {
+        const text = this.generateShareText(config)
+        const encodedText = encodeURIComponent(text)
+        const encodedUrl = encodeURIComponent(setupUrl)
+
+        return `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}&summary=${encodedText}`
+    }
+
+    // Update URL with configuration (for template sharing)
+    static updateUrlWithConfig(config: SetupConfiguration): void {
+        if (typeof window === 'undefined') return
+
+        const encoded = this.encodeConfig(config)
+        const url = new URL(window.location.href)
+        url.searchParams.set('config', encoded)
+
+        window.history.replaceState({}, '', url.toString())
+    }
+
+    // Clear configuration from URL
+    static clearConfigFromUrl(): void {
+        if (typeof window === 'undefined') return
+
+        const url = new URL(window.location.href)
+        url.searchParams.delete('config')
+
+        window.history.replaceState({}, '', url.toString())
+    }
 }

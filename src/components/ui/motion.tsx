@@ -171,13 +171,19 @@ interface AnimatedCardProps {
     className?: string
     whileHover?: any
     whileTap?: any
+    onClick?: () => void
+    onMouseEnter?: () => void
+    onMouseLeave?: () => void
 }
 
 export function AnimatedCard({
     children,
     className,
     whileHover = { scale: 1.01, y: -1 },
-    whileTap = { scale: 0.99 }
+    whileTap = { scale: 0.99 },
+    onClick,
+    onMouseEnter,
+    onMouseLeave
 }: AnimatedCardProps) {
     return (
         <motion.div
@@ -185,6 +191,9 @@ export function AnimatedCard({
             whileHover={whileHover}
             whileTap={whileTap}
             transition={transitions.subtle}
+            onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
         >
             {children}
         </motion.div>

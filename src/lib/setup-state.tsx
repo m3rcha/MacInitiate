@@ -13,11 +13,13 @@ import { ScriptGenerator, GenerationResult, ScriptGenerationOptions } from '@/li
 import { ConfigSharing, SetupConfiguration } from '@/lib/config-sharing'
 import { APPS } from '@/data/apps'
 import { SYSTEM_TWEAKS } from '@/data/tweaks'
+import { DEVELOPER_TEMPLATES } from '@/data/templates'
 import type { App as AppType, Tweak as TweakType } from '@/types/common'
 
 const initialState: SetupState = {
     selectedApps: [],
     selectedTweaks: {},
+    selectedTemplate: undefined,
     generatedScript: '',
     currentStep: 'welcome',
     progress: 0,
@@ -90,10 +92,38 @@ function setupReducer(state: SetupState, action: SetupAction): SetupState {
             }
 
         case 'SELECT_TEMPLATE':
+            // When selecting a template, apply its apps and tweaks
+            const template = DEVELOPER_TEMPLATES.find(t => t.id === action.templateId)
+            if (template) {
+                return {
+                    ...state,
+                    selectedTemplate: action.templateId,
+                    selectedApps: template.apps,
+                    selectedTweaks: template.tweaks.reduce((acc, tweakId) => {
+                        acc[tweakId] = true
+                        return acc
+                    }, {} as Record<string, boolean>),
+                }
+            }
             return {
                 ...state,
                 selectedTemplate: action.templateId,
             }
+
+        case 'APPLY_TEMPLATE':
+            // Apply template without changing the selected template
+            const templateToApply = DEVELOPER_TEMPLATES.find(t => t.id === action.templateId)
+            if (templateToApply) {
+                return {
+                    ...state,
+                    selectedApps: templateToApply.apps,
+                    selectedTweaks: templateToApply.tweaks.reduce((acc, tweakId) => {
+                        acc[tweakId] = true
+                        return acc
+                    }, {} as Record<string, boolean>),
+                }
+            }
+            return state
 
         case 'CLEAR_TEMPLATE':
             return {
@@ -324,6 +354,35 @@ export function useConfigurationSharing() {
     }
 }
 
+export function useTemplateSelection() {
+    const { state, dispatch } = useSetup()
+
+    const selectTemplate = (templateId: string) => {
+        dispatch({ type: 'SELECT_TEMPLATE', templateId })
+    }
+
+    const applyTemplate = (templateId: string) => {
+        dispatch({ type: 'APPLY_TEMPLATE', templateId })
+    }
+
+    const clearTemplate = () => {
+        dispatch({ type: 'CLEAR_TEMPLATE' })
+    }
+
+    const selectedTemplate = state.selectedTemplate
+    const selectedTemplateData = selectedTemplate
+        ? DEVELOPER_TEMPLATES.find(t => t.id === selectedTemplate)
+        : null
+
+    return {
+        selectedTemplate,
+        selectedTemplateData,
+        selectTemplate,
+        applyTemplate,
+        clearTemplate,
+    }
+}
+
 export function useSetupNavigation() {
     const { state, dispatch } = useSetup()
 
@@ -332,7 +391,7 @@ export function useSetupNavigation() {
     }
 
     const nextStep = () => {
-        const steps: SetupState['currentStep'][] = ['welcome', 'apps', 'tweaks', 'templates', 'generate']
+        const steps: SetupState['currentStep'][] = ['welcome', 'templates', 'apps', 'tweaks', 'generate']
         const currentIndex = steps.indexOf(state.currentStep)
         if (currentIndex < steps.length - 1) {
             goToStep(steps[currentIndex + 1])
@@ -340,7 +399,7 @@ export function useSetupNavigation() {
     }
 
     const prevStep = () => {
-        const steps: SetupState['currentStep'][] = ['welcome', 'apps', 'tweaks', 'templates', 'generate']
+        const steps: SetupState['currentStep'][] = ['welcome', 'templates', 'apps', 'tweaks', 'generate']
         const currentIndex = steps.indexOf(state.currentStep)
         if (currentIndex > 0) {
             goToStep(steps[currentIndex - 1])

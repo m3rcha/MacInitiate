@@ -42,6 +42,7 @@ export type SetupAction =
   | { type: 'DESELECT_APP'; appId: string }
   | { type: 'TOGGLE_TWEAK'; tweakId: string; value?: boolean | string | number | null }
   | { type: 'SELECT_TEMPLATE'; templateId: string }
+  | { type: 'APPLY_TEMPLATE'; templateId: string }
   | { type: 'CLEAR_TEMPLATE' }
   | { type: 'GENERATE_SCRIPT' }
   | { type: 'SET_STEP'; step: SetupState['currentStep'] }

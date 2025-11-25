@@ -1,11 +1,25 @@
 'use client'
 
-import { useState } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Terminal, Package, Settings, Code } from 'lucide-react'
+import { AppSelector } from '@/components/AppSelector'
+import { TweakSelector } from '@/components/TweakSelector'
+import { ScriptPreview } from '@/components/ScriptPreview'
+import { SetupProvider, useAppSelection, useTweakSelection, useSetupNavigation, useScriptGeneration } from '@/lib/setup-state'
 
-export default function SetupPage() {
-  const [currentStep, setCurrentStep] = useState<'welcome' | 'apps' | 'tweaks' | 'templates' | 'generate'>('welcome')
+function SetupContent() {
+  const { selectedApps, toggleApp } = useAppSelection()
+  const { selectedTweaks, toggleTweak } = useTweakSelection()
+  const { currentStep, goToStep, nextStep, prevStep } = useSetupNavigation()
+  const { generateScript, result, isGenerating, updateOptions } = useScriptGeneration()
+
+  // Auto-generate script when reaching generate step
+  React.useEffect(() => {
+    if (currentStep === 'generate' && !result && !isGenerating) {
+      generateScript()
+    }
+  }, [currentStep, result, isGenerating, generateScript])
 
   const steps = [
     { id: 'welcome', name: 'Welcome', icon: Terminal },
@@ -52,16 +66,19 @@ export default function SetupPage() {
 
               return (
                 <div key={step.id} className="flex items-center">
-                  <div
+                  <button
+                    onClick={() => goToStep(step.id as typeof currentStep)}
                     className={`
                       flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors
-                      ${isActive ? 'border-primary bg-primary text-primary-foreground' : 
-                        isCompleted ? 'border-primary bg-primary text-primary-foreground' : 
-                        'border-border bg-card text-muted-foreground'}
+                      ${isActive ? 'border-primary bg-primary text-primary-foreground' :
+                        isCompleted ? 'border-primary bg-primary text-primary-foreground' :
+                          'border-border bg-card text-muted-foreground'}
+                      ${index <= currentStepIndex ? 'hover:opacity-80 cursor-pointer' : 'cursor-not-allowed'}
                     `}
+                    disabled={index > currentStepIndex}
                   >
                     <Icon className="h-4 w-4" />
-                  </div>
+                  </button>
                   <span className="ml-2 text-sm font-medium hidden sm:inline">
                     {step.name}
                   </span>
@@ -77,7 +94,7 @@ export default function SetupPage() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-6xl">
           {currentStep === 'welcome' && (
             <div className="text-center space-y-6">
               <h1 className="text-3xl font-bold">Welcome to MacInitiate</h1>
@@ -87,14 +104,14 @@ export default function SetupPage() {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <div className="rounded-lg border border-border bg-card p-4">
                   <Package className="h-8 w-8 text-primary mb-2" />
-                  <h3 className="font-semibold">200+ Apps</h3>
+                  <h3 className="font-semibold">3 Apps</h3>
                   <p className="text-sm text-muted-foreground">
                     Curated development and productivity tools
                   </p>
                 </div>
                 <div className="rounded-lg border border-border bg-card p-4">
                   <Settings className="h-8 w-8 text-primary mb-2" />
-                  <h3 className="font-semibold">System Tweaks</h3>
+                  <h3 className="font-semibold">20 System Tweaks</h3>
                   <p className="text-sm text-muted-foreground">
                     Optimize macOS with expert configurations
                   </p>
@@ -115,7 +132,7 @@ export default function SetupPage() {
                 </div>
               </div>
               <button
-                onClick={() => setCurrentStep('apps')}
+                onClick={nextStep}
                 className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3 text-sm font-medium text-primary-foreground shadow-lg transition-colors hover:bg-primary/90"
               >
                 Get Started
@@ -131,26 +148,29 @@ export default function SetupPage() {
                   Choose from our curated collection of modern macOS applications.
                 </p>
               </div>
-              <div className="rounded-lg border border-border bg-card p-8 text-center">
-                <Package className="h-12 w-12 text-primary mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">App Selection Coming Soon</h3>
-                <p className="text-muted-foreground mb-4">
-                  We&apos;re building a comprehensive catalog of 200+ curated apps.
-                </p>
-                <div className="flex gap-2 justify-center">
-                  <button
-                    onClick={() => setCurrentStep('tweaks')}
-                    className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-                  >
-                    Continue to Tweaks
-                  </button>
-                  <button
-                    onClick={() => setCurrentStep('welcome')}
-                    className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-                  >
-                    Back
-                  </button>
+
+              <AppSelector
+                selectedApps={selectedApps}
+                onAppToggle={toggleApp}
+              />
+
+              {/* Navigation Actions */}
+              <div className="flex justify-between items-center pt-6 border-t border-border">
+                <button
+                  onClick={prevStep}
+                  className="rounded-lg border border-border bg-card px-6 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
+                >
+                  Back
+                </button>
+                <div className="text-sm text-muted-foreground">
+                  {selectedApps.length} app{selectedApps.length !== 1 ? 's' : ''} selected
                 </div>
+                <button
+                  onClick={nextStep}
+                  className="rounded-lg bg-primary px-6 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                >
+                  Continue to Tweaks
+                </button>
               </div>
             </div>
           )}
@@ -163,26 +183,29 @@ export default function SetupPage() {
                   Fine-tune macOS for optimal productivity and workflow.
                 </p>
               </div>
-              <div className="rounded-lg border border-border bg-card p-8 text-center">
-                <Settings className="h-12 w-12 text-primary mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">System Tweaks Coming Soon</h3>
-                <p className="text-muted-foreground mb-4">
-                  Configure 100+ system preferences with expert-curated settings.
-                </p>
-                <div className="flex gap-2 justify-center">
-                  <button
-                    onClick={() => setCurrentStep('templates')}
-                    className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-                  >
-                    Continue to Templates
-                  </button>
-                  <button
-                    onClick={() => setCurrentStep('apps')}
-                    className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-                  >
-                    Back
-                  </button>
+
+              <TweakSelector
+                selectedTweaks={selectedTweaks}
+                onTweakToggle={(tweakId) => toggleTweak(tweakId)}
+              />
+
+              {/* Navigation Actions */}
+              <div className="flex justify-between items-center pt-6 border-t border-border">
+                <button
+                  onClick={prevStep}
+                  className="rounded-lg border border-border bg-card px-6 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
+                >
+                  Back
+                </button>
+                <div className="text-sm text-muted-foreground">
+                  {Object.keys(selectedTweaks).length} tweak{Object.keys(selectedTweaks).length !== 1 ? 's' : ''} selected
                 </div>
+                <button
+                  onClick={nextStep}
+                  className="rounded-lg bg-primary px-6 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                >
+                  Continue to Templates
+                </button>
               </div>
             </div>
           )}
@@ -203,13 +226,13 @@ export default function SetupPage() {
                 </p>
                 <div className="flex gap-2 justify-center">
                   <button
-                    onClick={() => setCurrentStep('generate')}
+                    onClick={nextStep}
                     className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
                   >
                     Generate Setup Script
                   </button>
                   <button
-                    onClick={() => setCurrentStep('tweaks')}
+                    onClick={prevStep}
                     className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
                   >
                     Back
@@ -227,31 +250,41 @@ export default function SetupPage() {
                   Your personalized macOS setup script is ready.
                 </p>
               </div>
-              <div className="rounded-lg border border-border bg-card p-8 text-center">
-                <Terminal className="h-12 w-12 text-primary mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Script Generator Coming Soon</h3>
-                <p className="text-muted-foreground mb-4">
-                  Generate a optimized shell script with your selections.
-                </p>
-                <div className="flex gap-2 justify-center">
-                  <button
-                    onClick={() => setCurrentStep('welcome')}
-                    className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-                  >
-                    Start Over
-                  </button>
-                  <button
-                    onClick={() => setCurrentStep('templates')}
-                    className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-                  >
-                    Back
-                  </button>
-                </div>
+
+              <ScriptPreview
+                result={result}
+                isGenerating={isGenerating}
+                onRegenerate={generateScript}
+                onOptionsChange={updateOptions}
+              />
+
+              {/* Navigation Actions */}
+              <div className="flex justify-between items-center pt-6 border-t border-border">
+                <button
+                  onClick={prevStep}
+                  className="rounded-lg border border-border bg-card px-6 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
+                >
+                  Back
+                </button>
+                <button
+                  onClick={() => goToStep('welcome')}
+                  className="rounded-lg bg-primary px-6 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                >
+                  Start Over
+                </button>
               </div>
             </div>
           )}
         </div>
       </main>
     </div>
+  )
+}
+
+export default function SetupPage() {
+  return (
+    <SetupProvider>
+      <SetupContent />
+    </SetupProvider>
   )
 }

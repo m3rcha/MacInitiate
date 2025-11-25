@@ -1,10 +1,13 @@
 export interface SetupState {
   selectedApps: string[]
-  selectedTweaks: string[]
+  selectedTweaks: Record<string, boolean | string | number | null>
   selectedTemplate?: string
   generatedScript: string
   currentStep: 'welcome' | 'apps' | 'tweaks' | 'templates' | 'generate'
   progress: number
+  generationResult: import('../lib/script-generator').GenerationResult | null
+  isGenerating: boolean
+  scriptOptions: import('../lib/script-generator').ScriptGenerationOptions
 }
 
 export type SetupAction =
@@ -16,6 +19,9 @@ export type SetupAction =
   | { type: 'GENERATE_SCRIPT' }
   | { type: 'SET_STEP'; step: SetupState['currentStep'] }
   | { type: 'RESET_SETUP' }
+  | { type: 'START_GENERATION' }
+  | { type: 'GENERATION_COMPLETE'; result: import('../lib/script-generator').GenerationResult }
+  | { type: 'SET_SCRIPT_OPTIONS'; options: import('../lib/script-generator').ScriptGenerationOptions }
 
 export interface ScriptGenerationOptions {
   includeComments: boolean

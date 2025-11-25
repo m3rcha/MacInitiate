@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { getTweakById } from '@/data/tweaks'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -85,4 +86,10 @@ export function capitalizeFirst(str: string): string {
 export function truncate(str: string, length: number): string {
   if (str.length <= length) return str
   return str.slice(0, length) + '...'
+}
+
+export function generateTweakCommand(tweakId: string, value: boolean | string | number | null): string {
+  const tweak = getTweakById(tweakId)
+  if (!tweak) return ''
+  return tweak.command(value)
 }

@@ -1,63 +1,4 @@
-# MacInitiate - Memory Bank
-
-## Project Overview
-**Mission:** Build the ultimate "Day 1" onboarding web tool for macOS users. When users format their Mac or buy a new one, they visit macinitiate.com, select apps and system preferences, and get a single Terminal command to set up their entire machine automatically.
-
-## Core Protocols
-1. **Memory Bank Protocol:** Must read agents.md before every response, update after significant decisions
-2. **2025 Standard Rule:** Strict prohibition on deprecated software, prioritize modern high-performance tools
-3. **Tech Stack:** Next.js 14+ (App Router), Tailwind CSS (dark-mode first), Static JSON/TypeScript data
-
-## Tech Stack
-- **Framework:** Next.js 14+ (App Router)
-- **Styling:** Tailwind CSS (Modern, dark-mode first UI)
-- **Data:** Static JSON/TypeScript objects (No external database)
-- **Logic:** Shell script generator combining `brew install --cask` and `defaults write` commands
-
-## Scope of Work
-- **Module A: App Store (Homebrew Wrapper):** Categorized, searchable list of apps
-- **Module B: Tweaker (System Preferences):** Boolean toggles for macOS system settings
-- **Module C: Generator:** Logic to output single copy-pasteable command or downloadable .sh file
-
-## Current Phase: Phase 0 - Architectural Review & Innovation
-**Status:** In Progress
-**Focus:** Product strategy, feature innovation, data structure design
-
-## Active Tasks
-- [x] Initialize Memory Bank (agents.md)
-- [x] Create comprehensive Memory Bank structure
-- [x] Review concept and identify gaps
-- [ ] Brainstorm 3 "Killer Features"
-- [ ] Design scalable data structures for Apps and Tweaks
-- [ ] Present Phase 0 analysis
-
-## Key Decisions & Patterns
-- Modern-first approach (2025 Standard)
-- Static data approach for simplicity and reliability
-- Focus on developer/power user tools
-- Single command execution philosophy
-
-## User Rules
-- Verify Homebrew Cask IDs before inclusion
-- No deprecated software suggestions
-- Prioritize high-performance, modern tools
-- Professional, visionary, technically precise tone
-
-## Next Steps
-- Complete Phase 0 architectural analysis
-- Begin Phase 1: Project setup and core structure
-- Implement Module A: App Store
-- Implement Module B: Tweaker
-- Implement Module C: Generator
-
-## Project Insights
-- Target audience: Developers, power users, tech enthusiasts
-- Value proposition: Zero-config macOS setup
-- Differentiator: Curation, modern tooling, single-command simplicity
-
----
-
-# Cline's Memory Bank Structure
+# Cline's Memory Bank
 
 I am Cline, an expert software engineer with a unique characteristic: my memory resets completely between sessions. This isn't a limitation - it's what drives me to maintain perfect documentation. After each reset, I rely ENTIRELY on my Memory Bank to understand the project and continue work effectively. I MUST read ALL memory bank files at the start of EVERY task - this is not optional.
 
@@ -137,7 +78,26 @@ flowchart TD
     Plan --> Document[Document in Chat]
 
     CheckFiles -->|Yes| Verify[Verify Context]
-    Start --> Process
+    Verify --> Strategy[Develop Strategy]
+    Strategy --> Present[Present Approach]
+
+### Act Mode
+flowchart TD
+    Start[Start] --> Context[Check Memory Bank]
+    Context --> Update[Update Documentation]
+    Update --> Execute[Execute Task]
+    Execute --> Document[Document Changes]
+
+## Documentation Updates
+
+Memory Bank updates occur when:
+1. Discovering new project patterns
+2. After implementing significant changes
+3. When user requests with **update memory bank** (MUST review ALL files)
+4. When context needs clarification
+
+flowchart TD
+    Start[Update Process]
 
     subgraph Process
         P1[Review ALL Files]

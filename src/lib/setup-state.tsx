@@ -42,7 +42,28 @@ function setupReducer(state: SetupState, action: SetupAction): SetupState {
 
         case 'TOGGLE_TWEAK':
             const currentTweakValue = state.selectedTweaks[action.tweakId]
-            const newTweakValue = currentTweakValue === undefined ? true : !currentTweakValue
+            let newTweakValue: boolean | string | number | null
+
+            if (currentTweakValue === undefined) {
+                // If not selected, set to the provided value or true
+                newTweakValue = action.value !== undefined ? action.value : true
+            } else if (action.value !== undefined) {
+                // If a specific value is provided, use it
+                newTweakValue = action.value
+            } else if (typeof currentTweakValue === 'boolean') {
+                // For boolean values, toggle true/false
+                newTweakValue = !currentTweakValue
+            } else {
+                // For non-boolean values, remove them (deselect)
+                // We'll handle removal by deleting the key
+                const newSelectedTweaks = { ...state.selectedTweaks }
+                delete newSelectedTweaks[action.tweakId]
+                return {
+                    ...state,
+                    selectedTweaks: newSelectedTweaks,
+                }
+            }
+
             return {
                 ...state,
                 selectedTweaks: {
@@ -207,18 +228,19 @@ export function useAppSelection() {
 export function useTweakSelection() {
     const { state, dispatch } = useSetup()
 
-    const toggleTweak = (tweakId: string) => {
-        dispatch({ type: 'TOGGLE_TWEAK', tweakId })
-        // For now, we'll just toggle boolean values. Could be enhanced later
+    const toggleTweak = (tweakId: string, value?: boolean | string | number | null) => {
+        dispatch({ type: 'TOGGLE_TWEAK', tweakId, value })
     }
 
     const isTweakSelected = (tweakId: string) => state.selectedTweaks.hasOwnProperty(tweakId)
+    const getTweakValue = (tweakId: string) => state.selectedTweaks[tweakId]
     const selectedCount = Object.keys(state.selectedTweaks).length
 
     return {
         selectedTweaks: state.selectedTweaks,
         toggleTweak,
         isTweakSelected,
+        getTweakValue,
         selectedCount,
     }
 }

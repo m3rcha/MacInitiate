@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Terminal, Package, Settings, Code, Keyboard } from 'lucide-react'
+import { ArrowLeft, Terminal, Package, Settings, Code, Keyboard, Sparkles, Zap, Shield } from 'lucide-react'
 import { AppSelector } from '@/components/AppSelector'
 import { TweakSelector } from '@/components/TweakSelector'
 import { ScriptPreview } from '@/components/ScriptPreview'
@@ -14,10 +14,11 @@ import { useLanguage } from '@/contexts/language-context'
 import { useTranslation } from '@/lib/i18n'
 import {
   AnimatedContainer,
-  AnimatedButton,
   AnimatedCard,
   PageTransition,
-  transitions
+  transitions,
+  StaggerContainer,
+  StaggerItem
 } from '@/components/ui/motion'
 import { useKeyboardShortcuts } from '@/hooks/use-keyboard-shortcuts'
 import { cn } from '@/lib/utils'
@@ -128,247 +129,249 @@ function SetupContent() {
             {currentStep === 'welcome' && (
               <AnimatedContainer variant="slideUp" className="space-y-12">
                 <div className="text-center space-y-6">
+                  <div className="inline-flex items-center px-4 py-2 bg-blue-100 dark:bg-blue-900/30 rounded-full text-sm font-medium text-blue-700 dark:text-blue-300">
+                    <Terminal className="w-4 h-4 mr-2" />
+                    Step 1 of 4
+                  </div>
                   <div className="space-y-4">
-                    <h1 className="text-5xl font-bold tracking-tight">{t.setup.welcome.title}</h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                      {t.setup.welcome.description}
+                    <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
+                      Setup your Mac
+                    </h1>
+                    <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                      Choose your apps and system preferences. We'll generate a single command to set up everything.
                     </p>
                   </div>
                 </div>
 
-                <AnimatedCard className="rounded-2xl border border-border bg-card p-8 shadow-lg">
-                  <h2 className="mb-6 text-2xl font-semibold">{t.setup.welcome.whatWeSetup}</h2>
+                <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 shadow-lg">
                   <div className="grid gap-6 md:grid-cols-3">
-                    <div className="flex items-start space-x-4">
-                      <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Package className="h-5 w-5 text-primary" />
+                    <div className="text-center">
+                      <div className="h-12 w-12 mx-auto bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-4">
+                        <Package className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <div>
-                        <h3 className="font-semibold mb-2">{t.setup.welcome.essentialApps}</h3>
-                        <p className="text-sm text-muted-foreground">{t.setup.welcome.essentialAppsDesc}</p>
-                      </div>
+                      <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Essential Apps</h3>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        250+ curated applications for development and productivity
+                      </p>
                     </div>
-                    <div className="flex items-start space-x-4">
-                      <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Settings className="h-5 w-5 text-primary" />
+                    <div className="text-center">
+                      <div className="h-12 w-12 mx-auto bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center mb-4">
+                        <Settings className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                       </div>
-                      <div>
-                        <h3 className="font-semibold mb-2">{t.setup.welcome.systemPreferences}</h3>
-                        <p className="text-sm text-muted-foreground">{t.setup.welcome.systemPreferencesDesc}</p>
-                      </div>
+                      <h3 className="font-semibold text-slate-900 dark:text-white mb-2">System Preferences</h3>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        86+ tweaks to optimize your macOS experience
+                      </p>
                     </div>
-                    <div className="flex items-start space-x-4">
-                      <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Terminal className="h-5 w-5 text-primary" />
+                    <div className="text-center">
+                      <div className="h-12 w-12 mx-auto bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mb-4">
+                        <Terminal className="h-6 w-6 text-green-600 dark:text-green-400" />
                       </div>
-                      <div>
-                        <h3 className="font-semibold mb-2">{t.setup.welcome.automationScript}</h3>
-                        <p className="text-sm text-muted-foreground">{t.setup.welcome.automationScriptDesc}</p>
-                      </div>
+                      <h3 className="font-semibold text-slate-900 dark:text-white mb-2">One Command</h3>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        Single terminal script to install and configure everything
+                      </p>
                     </div>
                   </div>
-                </AnimatedCard>
+                </div>
 
-                <div className="flex justify-center pt-8">
-                  <AnimatedButton>
-                    <button
-                      onClick={nextStep}
-                      className="rounded-xl bg-primary px-8 py-4 text-base font-medium text-primary-foreground hover:bg-primary/90 shadow-lg transition-all duration-200 hover:scale-105"
-                    >
-                      {t.setup.welcome.getStarted}
-                      <ArrowLeft className="ml-2 h-4 w-4 rotate-180" />
-                    </button>
-                  </AnimatedButton>
+                <div className="flex justify-center">
+                  <button
+                    onClick={nextStep}
+                    className="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+                  >
+                    Get Started
+                    <ArrowLeft className="ml-2 h-5 w-5 rotate-180" />
+                  </button>
                 </div>
               </AnimatedContainer>
             )}
 
             {/* Apps Step */}
             {currentStep === 'apps' && (
-              <AnimatedContainer variant="slideUp" className="space-y-10">
-                <div className="text-center space-y-4">
-                  <h1 className="text-4xl font-bold tracking-tight">{t.setup.apps.title}</h1>
-                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    {t.setup.apps.description}
-                  </p>
+              <AnimatedContainer variant="slideUp" className="space-y-12">
+                <div className="text-center space-y-6">
+                  <div className="inline-flex items-center px-4 py-2 bg-purple-100 dark:bg-purple-900/30 rounded-full text-sm font-medium text-purple-700 dark:text-purple-300">
+                    <Package className="w-4 h-4 mr-2" />
+                    Step 2 of 4
+                  </div>
+                  <div className="space-y-4">
+                    <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
+                      Choose Apps
+                    </h1>
+                    <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                      Select from 250+ curated applications for development and productivity.
+                    </p>
+                  </div>
                 </div>
 
-                <div className="bg-card rounded-2xl border border-border p-8 shadow-lg">
+                <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 shadow-lg">
                   <AppSelector
                     selectedApps={selectedApps}
                     onAppToggle={toggleApp}
                   />
                 </div>
 
-                <div className="flex justify-between items-center pt-8">
-                  <AnimatedButton>
-                    <button
-                      onClick={prevStep}
-                      className="rounded-xl border border-border bg-card px-6 py-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-200"
-                    >
-                      <ArrowLeft className="mr-2 h-4 w-4" />
-                      {t.common.back}
-                    </button>
-                  </AnimatedButton>
-                  <AnimatedButton>
-                    <button
-                      onClick={nextStep}
-                      className="rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 shadow-lg transition-all duration-200 hover:scale-105"
-                    >
-                      {t.common.continue}
-                      <ArrowLeft className="ml-2 h-4 w-4 rotate-180" />
-                    </button>
-                  </AnimatedButton>
+                <div className="flex justify-between items-center">
+                  <button
+                    onClick={prevStep}
+                    className="inline-flex items-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back
+                  </button>
+                  <button
+                    onClick={nextStep}
+                    className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+                  >
+                    Continue
+                    <ArrowLeft className="ml-2 h-4 w-4 rotate-180" />
+                  </button>
                 </div>
               </AnimatedContainer>
             )}
 
             {/* Tweaks Step */}
             {currentStep === 'tweaks' && (
-              <AnimatedContainer variant="slideUp" className="space-y-10">
-                <div className="text-center space-y-4">
-                  <h1 className="text-4xl font-bold tracking-tight">{t.setup.tweaks.title}</h1>
-                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    {t.setup.tweaks.description}
-                  </p>
+              <AnimatedContainer variant="slideUp" className="space-y-12">
+                <div className="text-center space-y-6">
+                  <div className="inline-flex items-center px-4 py-2 bg-orange-100 dark:bg-orange-900/30 rounded-full text-sm font-medium text-orange-700 dark:text-orange-300">
+                    <Settings className="w-4 h-4 mr-2" />
+                    Step 3 of 4
+                  </div>
+                  <div className="space-y-4">
+                    <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
+                      Configure macOS
+                    </h1>
+                    <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                      Choose system preferences and optimizations for your macOS experience.
+                    </p>
+                  </div>
                 </div>
 
-                <div className="bg-card rounded-2xl border border-border p-8 shadow-lg">
+                <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 shadow-lg">
                   <TweakSelector
                     selectedTweaks={selectedTweaks}
                     onTweakToggle={(tweakId) => toggleTweak(tweakId)}
                   />
                 </div>
 
-                <div className="flex justify-between items-center pt-8">
-                  <AnimatedButton>
-                    <button
-                      onClick={prevStep}
-                      className="rounded-xl border border-border bg-card px-6 py-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-200"
-                    >
-                      <ArrowLeft className="mr-2 h-4 w-4" />
-                      {t.common.back}
-                    </button>
-                  </AnimatedButton>
-                  <AnimatedButton>
-                    <button
-                      onClick={nextStep}
-                      className="rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 shadow-lg transition-all duration-200 hover:scale-105"
-                    >
-                      {t.common.continue}
-                      <ArrowLeft className="ml-2 h-4 w-4 rotate-180" />
-                    </button>
-                  </AnimatedButton>
+                <div className="flex justify-between items-center">
+                  <button
+                    onClick={prevStep}
+                    className="inline-flex items-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back
+                  </button>
+                  <button
+                    onClick={nextStep}
+                    className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+                  >
+                    Continue
+                    <ArrowLeft className="ml-2 h-4 w-4 rotate-180" />
+                  </button>
                 </div>
               </AnimatedContainer>
             )}
 
             {/* Templates Step */}
-            {currentStep === 'templates' && (
-              <AnimatedContainer variant="slideUp" className="space-y-10">
-                <div className="text-center space-y-4">
-                  <h1 className="text-4xl font-bold tracking-tight">{t.setup.templates.title}</h1>
-                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    {t.setup.templates.description}
-                  </p>
-                </div>
-
-                <AnimatedCard className="rounded-2xl border border-border bg-card p-12 text-center shadow-lg">
-                  <div className="space-y-6">
-                    <div className="mx-auto h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Code className="h-10 w-10 text-primary" />
+            {
+              currentStep === 'templates' && (
+                <AnimatedContainer variant="slideUp" className="space-y-12">
+                  <div className="text-center space-y-6">
+                    <div className="inline-flex items-center px-4 py-2 bg-green-100 dark:bg-green-900/30 rounded-full text-sm font-medium text-green-700 dark:text-green-300">
+                      <Code className="w-4 h-4 mr-2" />
+                      Step 3 of 4
                     </div>
-                    <div>
-                      <h2 className="text-2xl font-semibold mb-4">{t.setup.templates.comingSoon}</h2>
-                      <p className="text-muted-foreground max-w-md mx-auto">
-                        {t.setup.templates.comingSoonDesc}
+                    <div className="space-y-4">
+                      <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
+                        Templates
+                      </h1>
+                      <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                        Pre-configured setups for different workflows. Coming soon.
                       </p>
                     </div>
-                    <div className="pt-4">
-                      <AnimatedButton>
-                        <button
-                          onClick={nextStep}
-                          className="rounded-xl bg-primary px-8 py-4 text-base font-medium text-primary-foreground hover:bg-primary/90 shadow-lg transition-all duration-200 hover:scale-105"
-                        >
-                          {t.setup.templates.skipForNow}
-                          <ArrowLeft className="ml-2 h-4 w-4 rotate-180" />
-                        </button>
-                      </AnimatedButton>
-                    </div>
                   </div>
-                </AnimatedCard>
 
-                <div className="flex justify-between items-center pt-8">
-                  <AnimatedButton>
+                  <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 shadow-lg text-center">
+                    <div className="h-16 w-16 mx-auto bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mb-4">
+                      <Code className="h-8 w-8 text-green-600 dark:text-green-400" />
+                    </div>
+                    <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">Coming Soon</h2>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      Templates for developers, designers, and power users will be available soon.
+                    </p>
+                  </div>
+
+                  <div className="flex justify-between items-center">
                     <button
                       onClick={prevStep}
-                      className="rounded-xl border border-border bg-card px-6 py-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-200"
+                      className="inline-flex items-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
                     >
                       <ArrowLeft className="mr-2 h-4 w-4" />
-                      {t.common.back}
+                      Back
                     </button>
-                  </AnimatedButton>
-                </div>
-              </AnimatedContainer>
-            )}
+                  </div>
+                </AnimatedContainer >
+              )
+            }
 
             {/* Generate Step */}
-            {currentStep === 'generate' && (
-              <AnimatedContainer variant="slideUp" className="space-y-10">
-                <div className="text-center space-y-4">
-                  <h1 className="text-4xl font-bold tracking-tight">{t.setup.generate.title}</h1>
-                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    {t.setup.generate.description}
-                  </p>
-                </div>
+            {
+              currentStep === 'generate' && (
+                <AnimatedContainer variant="slideUp" className="space-y-12">
+                  <div className="text-center space-y-6">
+                    <div className="inline-flex items-center px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full text-sm font-medium text-indigo-700 dark:text-indigo-300">
+                      <Terminal className="w-4 h-4 mr-2" />
+                      Step 4 of 4
+                    </div>
+                    <div className="space-y-4">
+                      <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
+                        Generate Script
+                      </h1>
+                      <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                        Your personalized setup script is ready to run in Terminal.
+                      </p>
+                    </div>
+                  </div>
 
-                <div className="bg-card rounded-2xl border border-border p-8 shadow-lg">
-                  <ScriptPreview
-                    result={result}
-                    isGenerating={isGenerating}
-                    onRegenerate={generateScript}
-                    onOptionsChange={updateOptions}
-                  />
-                </div>
+                  <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 shadow-lg">
+                    <ScriptPreview
+                      result={result}
+                      isGenerating={isGenerating}
+                      onRegenerate={generateScript}
+                      onOptionsChange={updateOptions}
+                    />
+                  </div>
 
-                {/* Configuration Sharing */}
-                <div className="bg-card rounded-2xl border border-border p-8 shadow-lg">
-                  <ConfigSharing />
-                </div>
+                  <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 shadow-lg">
+                    <ConfigSharing />
+                  </div>
 
-                {/* Navigation Actions */}
-                <div className="flex justify-between items-center pt-8 border-t border-border">
-                  <AnimatedButton>
+                  <div className="flex justify-between items-center">
                     <button
                       onClick={prevStep}
-                      className="rounded-xl border border-border bg-card px-6 py-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-200"
+                      className="inline-flex items-center px-6 py-3 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
                     >
                       <ArrowLeft className="mr-2 h-4 w-4" />
-                      {t.common.back}
+                      Back
                     </button>
-                  </AnimatedButton>
-                  <AnimatedButton>
-                    <button
-                      onClick={() => goToStep('welcome')}
-                      className="rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 shadow-lg transition-all duration-200 hover:scale-105"
-                    >
-                      {t.common.startOver}
-                    </button>
-                  </AnimatedButton>
-                </div>
-              </AnimatedContainer>
-            )}
-          </div>
-        </main>
+                  </div>
+                </AnimatedContainer>
+              )
+            }
+          </div >
+        </main >
 
         {/* Keyboard Shortcuts Help Modal */}
-        <KeyboardShortcutsHelp
+        < KeyboardShortcutsHelp
           shortcuts={shortcutsWithKeys}
           isOpen={showHelp}
           onClose={() => setShowHelp(false)}
         />
-      </PageTransition>
-    </div>
+      </PageTransition >
+    </div >
   )
 }
 

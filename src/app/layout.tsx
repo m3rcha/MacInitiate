@@ -15,15 +15,62 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'MacInitiate - Ultimate macOS Setup Tool',
-  description: 'The ultimate "Day 1" onboarding web tool for macOS users. Select apps and system preferences, get a single Terminal command to set up your entire machine automatically.',
-  keywords: ['macOS', 'setup', 'automation', 'Homebrew', 'development', 'tools'],
+  title: {
+    default: 'MacInitiate - Ultimate macOS Setup Tool',
+    template: '%s | MacInitiate'
+  },
+  description: 'The ultimate "Day 1" onboarding web tool for macOS users. Select apps and system preferences, get a single Terminal command to set up your entire machine automatically. Lightning fast, system safe, developer ready.',
+  keywords: ['macOS', 'setup', 'automation', 'Homebrew', 'development', 'tools', 'developer', 'productivity', 'configuration', 'script'],
   authors: [{ name: 'MacInitiate Team' }],
+  creator: 'MacInitiate',
+  publisher: 'MacInitiate',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://macinitiate.com'),
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
-    title: 'MacInitiate - Ultimate macOS Setup Tool',
-    description: 'Zero-config macOS setup in minutes, not hours.',
     type: 'website',
+    locale: 'en_US',
     url: 'https://macinitiate.com',
+    title: 'MacInitiate - Ultimate macOS Setup Tool',
+    description: 'The ultimate "Day 1" onboarding web tool for macOS users. Select apps and system preferences, get a single Terminal command to set up your entire machine automatically.',
+    siteName: 'MacInitiate',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'MacInitiate - Ultimate macOS Setup Tool',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MacInitiate - Ultimate macOS Setup Tool',
+    description: 'The ultimate "Day 1" onboarding web tool for macOS users. Select apps and system preferences, get a single Terminal command to set up your entire machine automatically.',
+    images: ['/og-image.png'],
+    creator: '@macinitiate',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'your-google-verification-code',
+    yandex: 'your-yandex-verification-code',
+    yahoo: 'your-yahoo-verification-code',
   },
 }
 

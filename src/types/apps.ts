@@ -6,26 +6,26 @@ export interface App {
   category: AppCategory
   subcategory: string
   tags: string[]
-  
+
   // Installation metadata
-  source: 'homebrew-cask' | 'mac-app-store' | 'direct-download'
+  source: 'homebrew-cask' | 'homebrew' | 'mac-app-store' | 'direct-download'
   packageId: string
   installOrder: number
-  
+
   // Compatibility & requirements
   minMacOSVersion: string
   maxMacOSVersion?: string
   dependencies: string[]
   conflictsWith: string[]
   alternatives: string[]
-  
+
   // Metadata
   size: string
   homepage: string
   lastUpdated: string
   maintainer: string
   popularity: number
-  
+
   // Developer-specific
   isDevTool: boolean
   commandLineTools?: string[]
@@ -40,7 +40,7 @@ export interface AppCategory {
   order: number
 }
 
-export type AppCategoryId = 
+export type AppCategoryId =
   | 'development'
   | 'productivity'
   | 'design'

@@ -11,41 +11,42 @@ export const fadeIn = {
 }
 
 export const slideUp = {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 15 },
     animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 }
+    exit: { opacity: 0, y: -15 }
 }
 
 export const slideDown = {
-    initial: { opacity: 0, y: -20 },
+    initial: { opacity: 0, y: -15 },
     animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 20 }
+    exit: { opacity: 0, y: 15 }
 }
 
 export const slideLeft = {
-    initial: { opacity: 0, x: 20 },
+    initial: { opacity: 0, x: 15 },
     animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -20 }
+    exit: { opacity: 0, x: -15 }
 }
 
 export const slideRight = {
-    initial: { opacity: 0, x: -20 },
+    initial: { opacity: 0, x: -15 },
     animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 20 }
+    exit: { opacity: 0, x: 15 }
 }
 
 export const scale = {
-    initial: { opacity: 0, scale: 0.9 },
+    initial: { opacity: 0, scale: 0.95 },
     animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.9 }
+    exit: { opacity: 0, scale: 0.95 }
 }
 
 // Transition presets
 export const transitions = {
-    smooth: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
-    bouncy: { duration: 0.4, ease: [0.68, -0.55, 0.265, 1.55] as const },
-    slow: { duration: 0.5, ease: [0.4, 0, 0.2, 1] as const },
-    fast: { duration: 0.15, ease: [0.4, 0, 0.2, 1] as const }
+    smooth: { duration: 0.25, ease: [0.4, 0, 0.2, 1] as const },
+    bouncy: { duration: 0.3, ease: [0.68, -0.55, 0.265, 1.55] as const },
+    slow: { duration: 0.4, ease: [0.4, 0, 0.2, 1] as const },
+    fast: { duration: 0.12, ease: [0.4, 0, 0.2, 1] as const },
+    subtle: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] as const }
 }
 
 // Animated container components
@@ -175,15 +176,15 @@ interface AnimatedCardProps {
 export function AnimatedCard({
     children,
     className,
-    whileHover = { scale: 1.02, y: -2 },
-    whileTap = { scale: 0.98 }
+    whileHover = { scale: 1.01, y: -1 },
+    whileTap = { scale: 0.99 }
 }: AnimatedCardProps) {
     return (
         <motion.div
             className={className}
             whileHover={whileHover}
             whileTap={whileTap}
-            transition={transitions.smooth}
+            transition={transitions.subtle}
         >
             {children}
         </motion.div>
@@ -203,8 +204,8 @@ export function AnimatedButton({
     children,
     className,
     disabled = false,
-    whileHover = { scale: 1.05 },
-    whileTap = { scale: 0.95 }
+    whileHover = { scale: 1.02 },
+    whileTap = { scale: 0.98 }
 }: AnimatedButtonProps) {
     return (
         <motion.button
@@ -212,7 +213,7 @@ export function AnimatedButton({
             disabled={disabled}
             whileHover={disabled ? {} : whileHover}
             whileTap={disabled ? {} : whileTap}
-            transition={transitions.smooth}
+            transition={transitions.subtle}
         >
             {children}
         </motion.button>
